@@ -25,8 +25,24 @@ indexRouter.post("/new", (req, res) => {
     user: req.body.author,
     added: new Date(),
   });
-  console.log(req.body);
   res.redirect("/");
+});
+
+indexRouter.get("/message/:id", (req, res) => {
+  const id = parseInt(req.params.id); // Get the id from the URL
+  const message = messages[id]; // Access the message from the array
+
+  // If the message does not exist, return a 404 error
+  if (!message) {
+    return res.status(404).send("Message not found");
+  }
+
+  // Render the message details view
+  res.render("messageDetails", {
+    author: message.user,
+    added: message.added,
+    messageText: message.text,
+  });
 });
 
 module.exports = indexRouter;

@@ -1,11 +1,22 @@
 <html>
   <body>
     <h1><%= title %></h1>
+    <a href="/new">Click here to create a new message!</a>
     <% messages.forEach((msg) => { %>
-    <div>
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        border: 2px solid gray;
+        margin: 8px 0;
+        padding: 8px;
+        gap: 8px;
+      "
+    >
       <span>From: <%= msg.user%></span>
-      <span>Added Date: <%= msg.added%></span>
-      <span><%= msg.text%></span>
+      <span>Date: <%= msg.added%></span>
+      <span>Text: <%= msg.text%></span>
+      <a href="/message/<%= messages.indexOf(msg) %>">Open</a>
     </div>
     <% }) %>
   </body>
