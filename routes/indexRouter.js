@@ -14,7 +14,7 @@ indexRouter.get("/", async (req, res) => {
     console.log("Fetched messages:", messages);
     res.render("index", { title: "Mini Messageboard", messages });
   } catch (err) {
-    console.error("Error fetching messages:", err.message);
+    console.error("Error in GET /:", err.message);
     res.status(500).send("Error fetching messages");
   }
 });
