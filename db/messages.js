@@ -1,6 +1,6 @@
 const { Pool } = require("pg");
 require("dotenv").config();
-console.log("Database URL:", process.env.DB_URL); // Log the DB URL to check
+console.log("Database URL:", process.env.DB_URL); // Log the DB URL to check it
 
 const pool = new Pool({
   connectionString: process.env.DB_URL,
