@@ -1,48 +1,54 @@
 const { Router } = require("express");
+const {
+  getAllMessages,
+  addMessage,
+  getMessageById,
+} = require("../db/messages");
 
 const indexRouter = Router();
 
-const messages = [
-  {
-    text: "Hi there!",
-    user: "Amando",
-    added: new Date(),
-  },
-  {
-    text: "Hello World!",
-    user: "Charles",
-    added: new Date(),
-  },
-];
-
-indexRouter.get("/", (req, res) => {
-  res.render("index", { title: "Mini Messageboard", messages: messages });
-});
-
-indexRouter.post("/new", (req, res) => {
-  messages.push({
-    text: req.body.messageText,
-    user: req.body.author,
-    added: new Date(),
-  });
-  res.redirect("/");
-});
-
-indexRouter.get("/message/:id", (req, res) => {
-  const id = parseInt(req.params.id); // Get the id from the URL
-  const message = messages[id]; // Access the message from the array
-
-  // If the message does not exist, return a 404 error
-  if (!message) {
-    return res.status(404).send("Message not found");
+// GET / - display all messages
+indexRouter.get("/", async (req, res) => {
+  try {
+    const messages = await getAllMessages(); // Fetch messages from the database
+    console.log("Fetched messages:", messages);
+    res.render("index", { title: "Mini Messageboard", messages });
+  } catch (err) {
+    console.error("Error fetching messages:", err.message);
+    res.status(500).send("Error fetching messages");
   }
+});
 
-  // Render the message details view
-  res.render("messageDetails", {
-    author: message.user,
-    added: message.added,
-    messageText: message.text,
-  });
+// POST /new - Add a new message
+indexRouter.post("/new", async (req, res) => {
+  const { messageText, author } = req.body;
+  try {
+    await addMessage(messageText, author);
+    res.redirect("/");
+  } catch (err) {
+    console.error("Error adding message:", err.message);
+    res.status(500).send("Error adding message");
+  }
+});
+
+// GET /message/:id - Display a single message by ID
+indexRouter.get("/message/:id", async (req, res) => {
+  const id = parseInt(req.params.id, 10); // Get the id from the URL
+
+  try {
+    const message = await getMessageById(id);
+    if (!message) {
+      return res.status(404).send("Message not found");
+    }
+    res.render("messageDetails", {
+      author: message.author,
+      added: message.created_at,
+      messageText: message.content,
+    });
+  } catch (err) {
+    console.error("Error fetching message:", err.message);
+    res.status(500).send("Error fetching message");
+  }
 });
 
 module.exports = indexRouter;

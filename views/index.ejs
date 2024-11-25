@@ -13,10 +13,10 @@
         gap: 8px;
       "
     >
-      <span>From: <%= msg.user%></span>
-      <span>Date: <%= msg.added%></span>
-      <span>Text: <%= msg.text%></span>
-      <a href="/message/<%= messages.indexOf(msg) %>">Open</a>
+      <span>From: <%= msg.author%></span>
+      <span>Date: <%= msg.created_at.toLocaleString()%></span>
+      <span>Text: <%= msg.content%></span>
+      <a href="/message/<%= msg.id %>">Open</a>
     </div>
     <% }) %>
   </body>
