@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const {
+  pool,
   getAllMessages,
   addMessage,
   getMessageById,

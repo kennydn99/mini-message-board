@@ -46,4 +46,4 @@ const getMessageById = async (id) => {
   }
 };
 
-module.exports = { getAllMessages, addMessage, getMessageById };
+module.exports = { pool, getAllMessages, addMessage, getMessageById };
